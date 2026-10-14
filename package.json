@@ -1,0 +1,36 @@
+{
+  "name": "vue-microfrontends",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Sistema de gestão empresarial construído com microfrontends em Vue 3, Module Federation e monorepo via npm workspaces.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:shell": "npm run dev -w @vue-mf/shell",
+    "dev:dashboard": "npm run dev -w @vue-mf/dashboard",
+    "dev:customers": "npm run dev -w @vue-mf/customers",
+    "dev:sales": "npm run dev -w @vue-mf/sales",
+    "dev:settings": "npm run dev -w @vue-mf/settings",
+    "build": "npm run build --workspaces --if-present",
+    "build:remotes": "npm run build -w @vue-mf/dashboard && npm run build -w @vue-mf/customers && npm run build -w @vue-mf/sales && npm run build -w @vue-mf/settings",
+    "preview:remotes": "concurrently -k -n dashboard,customers,sales,settings -c cyan,magenta,yellow,green \"npm run preview -w @vue-mf/dashboard\" \"npm run preview -w @vue-mf/customers\" \"npm run preview -w @vue-mf/sales\" \"npm run preview -w @vue-mf/settings\"",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "eslint . --ext .ts,.vue",
+    "format": "prettier --write \"apps/**/src/**/*.{ts,vue}\" \"packages/**/src/**/*.ts\""
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
