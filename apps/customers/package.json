@@ -8,7 +8,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 5003 --strictPort",
     "typecheck": "vue-tsc --noEmit",
-    "test": "vitest run"
+    "test": "cross-env NODE_OPTIONS=--no-experimental-webstorage vitest run"
   },
   "dependencies": {
     "@vue-mf/types": "*",
