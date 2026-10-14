@@ -38,6 +38,23 @@
   event bus tipado (`packages/utils/eventBus.ts`), usando os nomes de evento definidos em
   `packages/types/events.ts`. Nenhum módulo importa a store interna de outro.
 
+## Por que `@vue-mf/utils` e `@vue-mf/types` estão em `shared`
+- Inicialmente só `vue`, `vue-router` e `pinia` eram compartilhados entre shell e remotes.
+  Resultado: o event bus (`eventBus`) não funcionava entre módulos — cada remote recebia
+  sua própria cópia bundlada de `packages/utils`, com seu próprio `Map` de handlers em
+  memória, isolado do `Map` do shell. `customers.emit('customer:created', …)` nunca
+  chegava ao `eventBus.on(...)` registrado no shell, porque eram instâncias de módulo
+  diferentes, não a mesma.
+- Correção: adicionar `'@vue-mf/utils'` (e, por consistência, `'@vue-mf/types'`) ao array
+  `shared` da configuração de federation em **todos** os apps (shell e os 4 remotes). Com
+  isso, o runtime de federation deduplica o módulo em tempo de execução — o remote passa
+  a usar a mesma instância do `eventBus` que o host já carregou, e os eventos cruzam a
+  fronteira do module federation corretamente. Validado em browser: criar um cliente no
+  remote `customers` dispara um toast no shell.
+- Isso não é um detalhe cosmético: qualquer estado em nível de módulo (singletons, buses,
+  caches) que precise ser **o mesmo objeto** entre host e remotes precisa estar em
+  `shared` — caso contrário, Vite bundla uma cópia por app e o estado nunca se encontra.
+
 ## CSS nos remotes
 - `vite-plugin-css-injected-by-js` é usado em todos os remotes (não no shell). Sem ele, o
   CSS scoped de um componente Vue exposto via federation é extraído para um arquivo `.css`

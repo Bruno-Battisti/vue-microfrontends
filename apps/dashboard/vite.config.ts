@@ -13,7 +13,7 @@ export default defineConfig({
       exposes: {
         './DashboardApp': './src/DashboardApp.vue',
       },
-      shared: ['vue', 'vue-router', 'pinia'],
+      shared: ['vue', 'vue-router', 'pinia', '@vue-mf/utils', '@vue-mf/types'],
     }),
   ],
   server: {

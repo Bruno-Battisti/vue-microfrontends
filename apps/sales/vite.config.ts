@@ -13,7 +13,7 @@ export default defineConfig({
       exposes: {
         './SalesApp': './src/SalesApp.vue',
       },
-      shared: ['vue', 'vue-router', 'pinia'],
+      shared: ['vue', 'vue-router', 'pinia', '@vue-mf/utils', '@vue-mf/types'],
     }),
   ],
   server: {

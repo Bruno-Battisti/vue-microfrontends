@@ -16,7 +16,7 @@ export default defineConfig({
     federation({
       name: 'shell',
       remotes: REMOTES,
-      shared: ['vue', 'vue-router', 'pinia'],
+      shared: ['vue', 'vue-router', 'pinia', '@vue-mf/utils', '@vue-mf/types'],
     }),
   ],
   server: {
