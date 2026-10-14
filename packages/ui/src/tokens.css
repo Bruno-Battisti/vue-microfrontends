@@ -26,6 +26,21 @@
     'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
+/*
+ * Tema claro: aplicado pelo microfrontend de Configurações via
+ * document.documentElement.dataset.theme = 'light'. Como os tokens vivem neste
+ * pacote compartilhado (e cada app importa este mesmo arquivo), a preferência
+ * se propaga para o shell e para qualquer módulo remoto montado na página.
+ */
+:root[data-theme='light'] {
+  --mf-color-bg: #f8fafc;
+  --mf-color-surface: #ffffff;
+  --mf-color-surface-alt: #f1f5f9;
+  --mf-color-border: #e2e8f0;
+  --mf-color-text: #0f172a;
+  --mf-color-text-muted: #64748b;
+}
+
 body {
   margin: 0;
   background: var(--mf-color-bg);

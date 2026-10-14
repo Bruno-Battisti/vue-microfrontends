@@ -38,6 +38,28 @@
   event bus tipado (`packages/utils/eventBus.ts`), usando os nomes de evento definidos em
   `packages/types/events.ts`. Nenhum módulo importa a store interna de outro.
 
+## CSS nos remotes
+- `vite-plugin-css-injected-by-js` é usado em todos os remotes (não no shell). Sem ele, o
+  CSS scoped de um componente Vue exposto via federation é extraído para um arquivo `.css`
+  separado que só é referenciado pelo `index.html` standalone daquele app — o shell, ao
+  importar só o JS do módulo remoto, nunca carregaria esse CSS. O plugin injeta o CSS como
+  `<style>` via JS no próprio chunk exposto, resolvendo isso automaticamente.
+
+## "API" compartilhada entre microfrontends sem acoplamento de código
+- `packages/utils/seeds.ts` centraliza os dados iniciais (`seedCustomers`, `seedSales`).
+  Tanto `customers` quanto `sales`/`dashboard` criam sua própria instância de
+  `createRestResource` apontando para as mesmas chaves de `localStorage`
+  (`mf-customers`, `mf-sales`) — exatamente como dois frontends chamando os mesmos
+  endpoints de uma API real. Nenhum microfrontend importa store, componente ou lógica
+  interna de outro; o único acoplamento é o contrato de dados em `packages/types`.
+- O microfrontend de Configurações lê/grava o mesmo registro de perfil que o shell usa
+  para autenticação (`mf-auth-user`), pelo mesmo motivo: é a mesma "entidade" vista por
+  dois módulos diferentes, não uma dependência direta entre eles.
+- O tema (claro/escuro) escolhido em Configurações é aplicado via
+  `document.documentElement.dataset.theme`, lido pelos tokens CSS globais em
+  `packages/ui/src/tokens.css` — por isso a troca de tema se reflete em qualquer módulo
+  montado na página (inclusive o shell), sem nenhuma comunicação direta entre eles.
+
 ## Resiliência
 - O shell carrega cada remoto dentro de um boundary de erro (`try/catch` assíncrono em torno do
   `import()` + componente de fallback de `@vue-mf/ui`); falha em um módulo não derruba os demais
