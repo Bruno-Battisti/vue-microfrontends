@@ -4,10 +4,10 @@ import federation from '@originjs/vite-plugin-federation';
 
 // Portas dos remotes em desenvolvimento/preview — ver docs/ARCHITECTURE.md
 const REMOTES = {
-  dashboard: 'http://localhost:5002/remoteEntry.js',
-  customers: 'http://localhost:5003/remoteEntry.js',
-  sales: 'http://localhost:5004/remoteEntry.js',
-  settings: 'http://localhost:5005/remoteEntry.js',
+  dashboard: 'http://localhost:5002/assets/remoteEntry.js',
+  customers: 'http://localhost:5003/assets/remoteEntry.js',
+  sales: 'http://localhost:5004/assets/remoteEntry.js',
+  settings: 'http://localhost:5005/assets/remoteEntry.js',
 };
 
 export default defineConfig({
